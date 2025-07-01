@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng Ký / Đăng Nhập</title>
+  <link rel="stylesheet" href="dangky-dangnhap.css">
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <img src="img/cho.jpg" alt="Hình minh họa">
+    </div>
+    <div class="right-panel">
+      <!-- Form Đăng ký -->
+      <div id="register-form">
+        <h2>Đăng Ký Tài Khoản</h2>
+        <form onsubmit="handleRegister(event)">
+          <input type="text" placeholder="Họ và tên" required>
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Mật khẩu" required>
+          <input type="password" placeholder="Nhập lại mật khẩu" required>
+          <button type="submit">Đăng Ký</button>
+        </form>
+      </div>
+
+      <!-- Form Đăng nhập -->
+      <div id="login-form" style="display: none;">
+        <h2>Đăng Nhập</h2>
+        <form>
+          <input type="email" placeholder="Email" required>
+          <input type="password" placeholder="Mật khẩu" required>
+          <button type="submit">Đăng Nhập</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleRegister(event) {
+      event.preventDefault();
+      // Hiện đăng nhập, ẩn đăng ký
+      document.getElementById("register-form").style.display = "none";
+      document.getElementById("login-form").style.display = "block";
+    }
+  </script>
+</body>
+</html>
