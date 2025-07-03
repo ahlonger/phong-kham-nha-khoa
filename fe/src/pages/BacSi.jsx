@@ -4,7 +4,7 @@ const BacSi = () => {
   return (
     
      <Navbar2 />
-    
+    // viết tiếp giao diện ở đây đi BƠ kiki
   );
 }
 export default BacSi;
