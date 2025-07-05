@@ -7,7 +7,7 @@ import {
   FaCalendarAlt,
   FaCube,
   FaCog,
-  FaSignOutAlt
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 const Navbar2 = () => {
@@ -28,7 +28,7 @@ const Navbar2 = () => {
         </div>
 
         <nav className="flex flex-col gap-2 px-2">
-          <Link to="/quan-ly-thong-tin" className={linkClass("/quan-ly-thong-tin")}>
+          <Link to="/bac-si" className={linkClass("/bac-si")}>
             <FaUser /> Quản lý thông tin cá nhân
           </Link>
 
@@ -46,7 +46,7 @@ const Navbar2 = () => {
             </div>
           </div>
 
-          <Link to="/dich-vu" className={linkClass("/quan-ly-dich-vu")}>
+          <Link to="/dich-vu" className={linkClass("/dich-vu")}>
             <FaCube /> Quản lý dịch vụ
           </Link>
 

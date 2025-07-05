@@ -16,7 +16,7 @@ const Sidebar = () => {
       <h2 className="text-2xl font-bold mb-8">Quản Lý</h2>
       <ul className="space-y-4">
         <li>
-          <Link to="/" className={linkClass("/")}>
+          <Link to="/admin" className={linkClass("/admin")}>
             <FaHome /> <span>Trang chủ</span>
           </Link>
         </li>

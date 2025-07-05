@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React from "react";
 
 const Navbar = () => {
@@ -13,9 +14,10 @@ const Navbar = () => {
       {/* Logo */}
       <div className="flex items-center gap-2 font-bold text-lg">
         <img
-          src="/img/cho.jpg"
+          src="/img/cho.jpg" // Đảm bảo file cho.jpg nằm trong public/img/
           alt="Logo"
           className="w-8 h-8 rounded-full border-2 border-white object-cover"
+          onError={(e) => { e.target.src = "https://via.placeholder.com/32"; }} // Fallback nếu ảnh không load
         />
         PHÒNG KHÁM AHLONG
       </div>
