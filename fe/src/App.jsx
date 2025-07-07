@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TrangChu from "./pages/Trangchu";
 import TaiKhoan from "./pages/Taikhoan";
-import DanhGia from "./pages/Danhgia";
+import DanhGia from "./pages/Danhgia"; // Giữ nguyên cho Admin
 import DichVuGoi from "./pages/DichVuGoi";
 import LichHen from "./pages/LichHen";
 import CaiDat from "./pages/CaiDat";
@@ -15,6 +15,11 @@ import DichVu from "./pages/DichVu";
 import QuanLyLichLamViec from "./pages/QuanLyLichLamViec";
 import LichDaDangKy from "./pages/LichDaDangKy";
 import LichHenHomNay from "./pages/LichHenHomNay";
+import GoiUser from "./pages/GoiUser";
+import DanhSachBacSi from "./pages/DanhSachBacSi";
+import DatLich from "./pages/DatLich";
+import ThanhToan from "./pages/ThanhToan";
+import DanhGiaUser from "./pages/DanhGiaUser"; // Thêm cho Bệnh nhân
 
 const App = () => {
   return (
@@ -24,6 +29,11 @@ const App = () => {
         <Route path="/" element={<BenhNhan />} />
         <Route path="/dang-nhap" element={<DangNhap />} />
         <Route path="/dang-ky" element={<DangKy />} />
+        <Route path="/goi" element={<GoiUser />} />
+        <Route path="/danh-sach-bac-si" element={<DanhSachBacSi />} />
+        <Route path="/dat-lich" element={<DatLich />} />
+        <Route path="/danh-gia-user" element={<DanhGiaUser />} /> {/* Route mới cho Bệnh nhân */}
+        <Route path="/thanh-toan" element={<ThanhToan />} />
 
         {/* BacSi */}
         <Route path="/bac-si" element={<BacSi />} />
@@ -35,7 +45,7 @@ const App = () => {
         {/* Admin */}
         <Route path="/admin" element={<TrangChu />} />
         <Route path="/tai-khoan" element={<TaiKhoan />} />
-        <Route path="/danh-gia" element={<DanhGia />} />
+        <Route path="/danh-gia" element={<DanhGia />} /> {/* Giữ nguyên cho Admin */}
         <Route path="/dich-vu-goi" element={<DichVuGoi />} />
         <Route path="/lich-hen" element={<LichHen />} />
         <Route path="/cai-dat" element={<CaiDat />} />

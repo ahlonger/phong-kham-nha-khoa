@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaStar } from "react-icons/fa";
 import ThanhToan from "./ThanhToan";
+import DanhGiaUser from "./DanhGiaUser"; // Sử dụng cho Bệnh nhân
 
 // Import ảnh (thay bằng placeholder nếu cần)
 import bannerImg from "../assets/banner.jpg";
@@ -119,35 +120,7 @@ const BenhNhan = () => {
         </section>
 
         <section id="danh-gia" className="w-[1200px] mx-auto my-10 p-10 bg-gray-50 text-center rounded-xl shadow">
-          <h2 className="text-2xl font-bold text-[#0077cc] mb-8">Đánh giá của bạn</h2>
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4">Đánh giá từ khách hàng</h3>
-            {reviews.map((review, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow mb-4 text-left">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">{review.name}</span>
-                  <span className="text-sm text-gray-500">{review.date}</span>
-                </div>
-                <div className="flex mt-2">
-                  {[...Array(5)].map((star, i) => <FaStar key={i} size={16} className={i < review.rating ? "text-yellow-400" : "text-gray-300"} />)}
-                </div>
-                <p className="mt-2 text-gray-600">{review.comment}</p>
-              </div>
-            ))}
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-gray-700 mb-4">Viết đánh giá của bạn</h3>
-            <form onSubmit={handleSubmitReview} className="space-y-4">
-              <div className="flex mb-4">
-                {[...Array(5)].map((star, index) => {
-                  const ratingValue = index + 1;
-                  return <FaStar key={index} size={30} className={`cursor-pointer ${ratingValue <= rating ? "text-yellow-400" : "text-gray-300"}`} onClick={() => handleRating(ratingValue)} />;
-                })}
-              </div>
-              <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Nhập nội dung đánh giá..." className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" />
-              <button type="submit" className="w-full bg-[#0077cc] text-white py-2 rounded-lg hover:bg-[#005fa3] transition">Gửi</button>
-            </form>
-          </div>
+          <DanhGiaUser /> {/* Sử dụng component cho Bệnh nhân */}
         </section>
         <Footer />
       </div>
