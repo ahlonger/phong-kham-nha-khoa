@@ -1,8 +1,9 @@
-// src/pages/LichDaDangKy.jsx
-import React from "react";
+import React, { useState } from "react";
 import Navbar2 from "../components/Navbar2";
 
 const LichDaDangKy = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   const schedules = [
     {
       ngay: "05/07/2025",
@@ -21,16 +22,19 @@ const LichDaDangKy = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Navbar2 />
+    <div className="flex min-h-screen bg-gray-100 mt-16">
+      <Navbar2 isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-      {/* Nội dung chính */}
-      <div className="flex-1 p-6">
+      <main
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? "ml-64" : "ml-0"
+        } p-6`}
+      >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center space-x-4">
             <div className="w-8 h-8 bg-gray-300 rounded flex items-center justify-center">
-              <span className="text-gray-500 font-bold">□</span>
+              <span className="text-gray-500 font-bold">📅</span>
             </div>
             <h1 className="text-xl font-bold text-blue-600">Lịch đã đăng ký</h1>
           </div>
@@ -44,14 +48,13 @@ const LichDaDangKy = () => {
         </div>
 
         {/* Nội dung chính */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold">Danh sách lịch đã đăng ký</h2>
-          </div>
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">
+            Danh sách lịch đã đăng ký
+          </h2>
 
-          {/* Bảng dữ liệu */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-separate border-spacing-y-2">
+            <table className="w-full text-left min-w-[600px]">
               <thead>
                 <tr className="bg-gray-300 text-gray-700">
                   <th className="py-3 px-4 font-semibold">Ngày</th>
@@ -63,29 +66,36 @@ const LichDaDangKy = () => {
               </thead>
               <tbody>
                 {schedules.map((schedule, index) => (
-                  <tr key={index} className="bg-white hover:bg-gray-50 rounded-lg">
+                  <tr
+                    key={index}
+                    className="border-t hover:bg-gray-50 transition"
+                  >
                     <td className="py-3 px-4">{schedule.ngay}</td>
                     <td className="py-3 px-4">{schedule.gioBatDau}</td>
                     <td className="py-3 px-4">{schedule.gioKetThuc}</td>
                     <td className="py-3 px-4">{schedule.phongKham}</td>
                     <td className="py-3 px-4">
-                      <span
-                        className={`px-3 py-1 text-sm font-medium rounded-full ${
-                          schedule.trangThai === "Đã xác nhận"
-                            ? "bg-blue-200 text-blue-800"
-                            : ""
-                        }`}
-                      >
+                      <span className="px-3 py-1 text-sm font-medium rounded-full bg-blue-200 text-blue-800">
                         {schedule.trangThai}
                       </span>
                     </td>
                   </tr>
                 ))}
+                {schedules.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan="5"
+                      className="text-center px-4 py-6 text-gray-500"
+                    >
+                      Không có lịch nào được đăng ký.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

@@ -1,10 +1,10 @@
-// src/pages/DichVu.jsx
 import React, { useState } from "react";
 import Navbar2 from "../components/Navbar2";
 import { FaSearch, FaFolderOpen } from "react-icons/fa";
 
 const DichVu = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const services = [
     {
@@ -15,17 +15,17 @@ const DichVu = () => {
       status: "Đã thanh toán",
     },
     {
-      name: "Khám dạ dày",
-      email: "abc@gmail.com",
-      date: "26/06/2025",
-      amount: "300000",
-      status: "Đã thanh toán",
+      name: "Khám tổng quát",
+      email: "xyz@gmail.com",
+      date: "27/06/2025",
+      amount: "500000",
+      status: "Đang chờ",
     },
     {
-      name: "Khám dạ dày",
-      email: "abc@gmail.com",
-      date: "26/06/2025",
-      amount: "300000",
+      name: "Làm trắng răng",
+      email: "bacsi@gmail.com",
+      date: "28/06/2025",
+      amount: "1200000",
       status: "Đã thanh toán",
     },
   ];
@@ -35,22 +35,26 @@ const DichVu = () => {
   );
 
   return (
-    <div className="flex">
-      <Navbar2 />
+    <div className="flex mt-16 min-h-screen">
+      <Navbar2 isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-      <div className="flex-1 p-8 bg-gray-50 min-h-screen">
-        {/* Tiêu đề */}
-        <div className="flex justify-between items-center mb-6">
+      <main
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? "ml-64" : "ml-0"
+        } p-8 bg-gray-50`}
+      >
+        {/* Tiêu đề và tìm kiếm */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
           <h1 className="text-2xl font-bold text-blue-700 flex items-center gap-2">
             <FaFolderOpen /> Quản lý dịch vụ
           </h1>
 
-          <div className="flex items-center border rounded px-3 py-2 bg-white shadow-sm">
+          <div className="flex items-center border rounded px-3 py-2 bg-white shadow-sm w-full md:w-auto">
             <FaSearch className="text-gray-500 mr-2" />
             <input
               type="text"
-              placeholder="Tìm kiếm gói dịch vụ..."
-              className="outline-none"
+              placeholder="Tìm kiếm dịch vụ..."
+              className="outline-none flex-1"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -58,19 +62,19 @@ const DichVu = () => {
         </div>
 
         {/* Bảng dịch vụ */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="bg-white shadow rounded-lg overflow-x-auto">
           <div className="flex items-center bg-blue-100 px-4 py-2 font-bold">
             <FaFolderOpen className="mr-2 text-blue-600" />
             Danh sách dịch vụ
           </div>
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[600px]">
             <thead>
               <tr className="bg-gray-200 text-gray-700">
-                <th className="px-4 py-2">Tên dịch vụ</th>
-                <th className="px-4 py-2">Email bệnh nhân</th>
-                <th className="px-4 py-2">Ngày</th>
-                <th className="px-4 py-2">Thành tiền</th>
-                <th className="px-4 py-2">Trạng thái</th>
+                <th className="px-4 py-3 font-medium">Tên dịch vụ</th>
+                <th className="px-4 py-3 font-medium">Email bệnh nhân</th>
+                <th className="px-4 py-3 font-medium">Ngày</th>
+                <th className="px-4 py-3 font-medium">Thành tiền</th>
+                <th className="px-4 py-3 font-medium">Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -79,11 +83,21 @@ const DichVu = () => {
                   key={index}
                   className="border-t hover:bg-gray-50 transition"
                 >
-                  <td className="px-4 py-2">{s.name}</td>
-                  <td className="px-4 py-2">{s.email}</td>
-                  <td className="px-4 py-2">{s.date}</td>
-                  <td className="px-4 py-2">{s.amount} vnđ</td>
-                  <td className="px-4 py-2">{s.status}</td>
+                  <td className="px-4 py-3">{s.name}</td>
+                  <td className="px-4 py-3">{s.email}</td>
+                  <td className="px-4 py-3">{s.date}</td>
+                  <td className="px-4 py-3">{s.amount} vnđ</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-3 py-1 text-sm rounded-full font-medium ${
+                        s.status === "Đã thanh toán"
+                          ? "bg-green-200 text-green-800"
+                          : "bg-yellow-200 text-yellow-800"
+                      }`}
+                    >
+                      {s.status}
+                    </span>
+                  </td>
                 </tr>
               ))}
               {filteredServices.length === 0 && (
@@ -99,7 +113,7 @@ const DichVu = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

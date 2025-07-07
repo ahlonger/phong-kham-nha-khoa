@@ -20,6 +20,8 @@ import DanhSachBacSi from "./pages/DanhSachBacSi";
 import DatLich from "./pages/DatLich";
 import ThanhToan from "./pages/ThanhToan";
 import DanhGiaUser from "./pages/DanhGiaUser"; // Thêm cho Bệnh nhân
+import CaiDatBacSi from "./pages/CaiDatBacSi";
+import ThongTinCaNhan from "./pages/ThongTinCaNhan"; // Thêm trang Thông Tin Cá Nhân
 
 const App = () => {
   return (
@@ -36,11 +38,12 @@ const App = () => {
         <Route path="/thanh-toan" element={<ThanhToan />} />
 
         {/* BacSi */}
-        <Route path="/bac-si" element={<BacSi />} />
+        <Route path="/bacsi" element={<ThongTinCaNhan />} />
         <Route path="/dich-vu" element={<DichVu />} />
         <Route path="/quan-ly-lich-lam-viec" element={<QuanLyLichLamViec />} />
         <Route path="/lich-da-dang-ky" element={<LichDaDangKy />} />
         <Route path="/lich-hen-hom-nay" element={<LichHenHomNay />} />
+        <Route path="/cai-dat-bac-si" element={<CaiDatBacSi />} />
 
         {/* Admin */}
         <Route path="/admin" element={<TrangChu />} />

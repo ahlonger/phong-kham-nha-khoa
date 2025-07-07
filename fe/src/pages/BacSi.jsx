@@ -5,6 +5,7 @@ const BacSi = () => {
     
      <Navbar2 />
     // viết tiếp giao diện ở đây đi BƠ kiki
+    // Đã responsive 
   );
 }
 export default BacSi;

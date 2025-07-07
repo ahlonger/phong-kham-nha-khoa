@@ -3,21 +3,18 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import ThanhToan from "./ThanhToan";
 
-// ✅ Import ảnh đúng cách trong React
 import bannerImage from "../assets/banner.jpg";
-import bacsiImage from "../assets/bacsi.png";
 
 const GoiUser = () => {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 
-  // ✅ Mảng dịch vụ có ảnh import trực tiếp
   const services = [
     {
       title: "Gói Khám Tổng Quát",
       desc: "Khám răng tổng thể, chụp X-quang, tư vấn chuyên sâu với bác sĩ.",
       price: "500.000đ",
-      image: bannerImage, // ảnh khác cho đa dạng
+      image: bannerImage,
       validity: "Thời hạn 6 tháng",
     },
     {
@@ -44,18 +41,15 @@ const GoiUser = () => {
   return (
     <>
       <Navbar />
-      <section
-        id="goi-dich-vu"
-        className="w-[1200px] mx-auto my-10 p-10 bg-gray-50 mt-10 text-center rounded-xl shadow"
-      >
-        <h2 className="text-2xl font-bold text-[#0077cc] mb-8">
+      <section className="max-w-7xl mx-auto p-4 md:p-10 mt-20 md:mt-28 text-center bg-gray-50 rounded-xl shadow">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#0077cc] mb-8">
           Gói dịch vụ nổi bật
         </h2>
-        <div className="flex justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {services.map((service, idx) => (
             <div
               key={idx}
-              className="w-[30%] bg-white p-5 rounded-xl shadow hover:-translate-y-1 transition relative"
+              className="bg-white p-5 rounded-xl shadow hover:-translate-y-1 transition relative"
             >
               <div
                 className="w-full h-40 bg-gray-300 mb-4 rounded"
@@ -82,7 +76,6 @@ const GoiUser = () => {
         </div>
       </section>
 
-      {/* ✅ Popup thanh toán */}
       <ThanhToan
         isOpen={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
