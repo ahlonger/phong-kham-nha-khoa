@@ -1,11 +1,9 @@
 // src/pages/LichHen.jsx
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
-import {
-  FaCalendarAlt,
-  FaFileExport,
-  FaSearch,
-} from "react-icons/fa";
+import { FaCalendarAlt, FaFileExport, FaSearch } from "react-icons/fa";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const LichHen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,7 +14,7 @@ const LichHen = () => {
       bacSi: "BS. Lê Văn T",
       thoiGian: "26/06/2025 - 09:30",
       dichVu: "Khám tổng quát",
-      trangThai: "Đã xác nhận",
+      trangThai: "Đang chờ",
     },
     {
       id: 2,
@@ -28,38 +26,63 @@ const LichHen = () => {
     },
   ]);
 
-  const filteredData = lichHenData.filter((item) =>
-    item.benhNhan.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.bacSi.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.dichVu.toLowerCase().includes(searchTerm.toLowerCase())
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const filteredData = lichHenData.filter(
+    (item) =>
+      item.benhNhan.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.bacSi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.dichVu.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleExportReport = () => {
-    alert("Xuất báo cáo thành công! (Tính năng giả lập)");
+    const worksheet = XLSX.utils.json_to_sheet(
+      lichHenData.map((item) => ({
+        "Bệnh nhân": item.benhNhan,
+        "Bác sĩ": item.bacSi,
+        "Thời gian": item.thoiGian,
+        "Dịch vụ": item.dichVu,
+        "Trạng thái": item.trangThai,
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "LichHen");
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "lich_hen.xlsx");
   };
 
   const handleViewDetail = (item) => {
-    alert(
-      `Chi tiết lịch hẹn:\nBệnh nhân: ${item.benhNhan}\nBác sĩ: ${item.bacSi}\nThời gian: ${item.thoiGian}\nDịch vụ: ${item.dichVu}\nTrạng thái: ${item.trangThai}`
-    );
+    setSelectedItem(item);
+    setIsModalOpen(true);
   };
 
   const handleCancelAppointment = (id) => {
     if (window.confirm("Bạn có chắc muốn hủy lịch hẹn này?")) {
-      setLichHenData((prevData) =>
-        prevData.map((item) =>
+      setLichHenData((prev) =>
+        prev.map((item) =>
           item.id === id ? { ...item, trangThai: "Đã huỷ" } : item
         )
       );
     }
   };
 
+  const handleConfirmAppointment = (id) => {
+    setLichHenData((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, trangThai: "Đã xác nhận" } : item
+      )
+    );
+    setIsModalOpen(false);
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       <Sidebar />
 
-      <div className="flex-1 p-6 pl-72">
-        <div className="flex justify-between items-center mb-6">
+      <div className="flex-1 p-4 md:p-8 md:pl-72">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <FaCalendarAlt /> Quản lý lịch hẹn
           </h1>
@@ -67,13 +90,13 @@ const LichHen = () => {
             onClick={handleExportReport}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
           >
-            <FaFileExport /> Xuất báo cáo
+            <FaFileExport /> Xuất Excel
           </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex justify-between items-center mb-6">
-            <div className="relative w-1/3">
+        <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div className="relative w-full md:w-1/3">
               <input
                 type="text"
                 placeholder="Tìm kiếm bệnh nhân, bác sĩ, dịch vụ..."
@@ -109,6 +132,8 @@ const LichHen = () => {
                         className={`px-3 py-1 text-sm font-medium rounded-full ${
                           item.trangThai === "Đã xác nhận"
                             ? "bg-green-100 text-green-800"
+                            : item.trangThai === "Đang chờ"
+                            ? "bg-yellow-100 text-yellow-700"
                             : "bg-red-100 text-red-700"
                         }`}
                       >
@@ -122,7 +147,7 @@ const LichHen = () => {
                       >
                         Chi tiết
                       </button>
-                      {item.trangThai === "Đã xác nhận" && (
+                      {item.trangThai !== "Đã huỷ" && (
                         <button
                           onClick={() => handleCancelAppointment(item.id)}
                           className="text-red-600 hover:text-red-800 text-sm"
@@ -144,6 +169,38 @@ const LichHen = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && selectedItem && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h2 className="text-xl font-bold mb-4">Chi tiết lịch hẹn</h2>
+            <p><strong>Bệnh nhân:</strong> {selectedItem.benhNhan}</p>
+            <p><strong>Bác sĩ:</strong> {selectedItem.bacSi}</p>
+            <p><strong>Thời gian:</strong> {selectedItem.thoiGian}</p>
+            <p><strong>Dịch vụ:</strong> {selectedItem.dichVu}</p>
+            <p><strong>Trạng thái:</strong> {selectedItem.trangThai}</p>
+
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+              >
+                Đóng
+              </button>
+
+              {selectedItem.trangThai === "Đang chờ" && (
+                <button
+                  onClick={() => handleConfirmAppointment(selectedItem.id)}
+                  className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700"
+                >
+                  Xác nhận
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

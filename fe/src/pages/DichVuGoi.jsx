@@ -1,4 +1,3 @@
-// src/pages/DichVuGoi.jsx
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import {
@@ -39,6 +38,8 @@ const DichVuGoi = () => {
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     ten: "",
     gia: "",
@@ -48,9 +49,37 @@ const DichVuGoi = () => {
     hinhAnh: "",
   });
 
-  const handleOpen = () => setIsOpen(true);
+  const openCreate = () => {
+    setIsEditing(false);
+    setFormData({
+      ten: "",
+      gia: "",
+      thoiHan: "",
+      trangThai: "Đang hoạt động",
+      moTa: "",
+      hinhAnh: "",
+    });
+    setIsOpen(true);
+  };
+
+  const openEdit = (goi) => {
+    setIsEditing(true);
+    setEditingId(goi.id);
+    setFormData({
+      ten: goi.ten,
+      gia: goi.gia,
+      thoiHan: goi.thoiHan,
+      trangThai: goi.trangThai,
+      moTa: goi.moTa,
+      hinhAnh: goi.hinhAnh,
+    });
+    setIsOpen(true);
+  };
+
   const handleClose = () => {
     setIsOpen(false);
+    setIsEditing(false);
+    setEditingId(null);
     setFormData({
       ten: "",
       gia: "",
@@ -61,18 +90,28 @@ const DichVuGoi = () => {
     });
   };
 
-  const handleCreate = () => {
-    const newGoi = {
-      ...formData,
-      id: Date.now(),
-      gia: Number(formData.gia),
-    };
-    setGoiDichVu([newGoi, ...goiDichVu]);
+  const handleSave = () => {
+    if (!formData.ten || !formData.gia) {
+      alert("Vui lòng nhập đầy đủ Tên & Giá!");
+      return;
+    }
+    if (isEditing) {
+      setGoiDichVu((prev) =>
+        prev.map((goi) =>
+          goi.id === editingId
+            ? { ...goi, ...formData, gia: Number(formData.gia) }
+            : goi
+        )
+      );
+    } else {
+      const newGoi = {
+        ...formData,
+        id: Date.now(),
+        gia: Number(formData.gia),
+      };
+      setGoiDichVu([newGoi, ...goiDichVu]);
+    }
     handleClose();
-  };
-
-  const handleCapNhat = (id) => {
-    alert(`Cập nhật gói có ID: ${id}`);
   };
 
   const handleXoa = (id) => {
@@ -86,12 +125,12 @@ const DichVuGoi = () => {
       <Sidebar />
 
       <div className="flex-1 p-6 pl-72">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
           <h1 className="text-2xl font-bold text-blue-800 flex items-center gap-2">
             <FaBoxOpen /> Quản lý dịch vụ gói
           </h1>
           <button
-            onClick={handleOpen}
+            onClick={openCreate}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded flex items-center gap-2 shadow"
           >
             <FaPlus /> Tạo gói mới
@@ -106,9 +145,9 @@ const DichVuGoi = () => {
           {goiDichVu.map((goi) => (
             <div
               key={goi.id}
-              className="flex items-start bg-white p-4 rounded-xl shadow-md justify-between"
+              className="flex flex-col md:flex-row md:items-start bg-white p-4 rounded-xl shadow-md justify-between gap-4"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 flex-1">
                 <img
                   src={goi.hinhAnh || "/img/default.png"}
                   alt={goi.ten}
@@ -119,7 +158,7 @@ const DichVuGoi = () => {
                     <FaHeartbeat className="text-pink-600" />
                     {goi.ten}
                   </h3>
-                  <p className="text-gray-600 mt-1 flex items-center gap-2">
+                  <p className="text-gray-600 mt-1 flex items-center gap-2 flex-wrap">
                     <FaMoneyBillWave className="text-green-600" />
                     <span className="font-semibold text-black">
                       {goi.gia.toLocaleString("vi-VN")}₫
@@ -138,9 +177,9 @@ const DichVuGoi = () => {
                   <p className="text-gray-700 mt-1">{goi.moTa}</p>
                 </div>
               </div>
-              <div className="flex flex-col gap-2 mt-2">
+              <div className="flex flex-row md:flex-col gap-2">
                 <button
-                  onClick={() => handleCapNhat(goi.id)}
+                  onClick={() => openEdit(goi)}
                   className="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded flex items-center gap-2"
                 >
                   <FaPen /> Cập nhật
@@ -157,14 +196,14 @@ const DichVuGoi = () => {
         </div>
       </div>
 
-      {/* Modal tạo gói */}
+      {/* Modal Tạo + Sửa */}
       <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="w-full max-w-lg bg-white rounded-xl p-6 shadow-lg space-y-4">
             <div className="flex justify-between items-center">
               <Dialog.Title className="text-lg font-bold text-blue-800">
-                Tạo gói dịch vụ
+                {isEditing ? "Cập nhật gói dịch vụ" : "Tạo gói dịch vụ"}
               </Dialog.Title>
               <button onClick={handleClose}>
                 <FaTimes className="text-gray-500 hover:text-red-500" />
@@ -217,10 +256,10 @@ const DichVuGoi = () => {
             />
             <div className="text-right">
               <button
-                onClick={handleCreate}
+                onClick={handleSave}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
               >
-                Tạo mới
+                {isEditing ? "Lưu thay đổi" : "Tạo mới"}
               </button>
             </div>
           </Dialog.Panel>
