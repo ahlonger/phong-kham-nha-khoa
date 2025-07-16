@@ -16,3 +16,17 @@ model User {
   avatar   String?
   role     String
 }
+
+model Booking {
+  id          Int      @id @default(autoincrement())
+  hoten       String
+  email       String
+  sdt         String
+  diachi      String
+  dichvu      String
+  bacsi       String
+  ghichu      String?
+  thoigianhen DateTime
+  dongy       Boolean
+  created_at  DateTime @default(now())
+}

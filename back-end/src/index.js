@@ -10,6 +10,7 @@ app.use(express.json());
 //   Xử lý x-www-form-urlencoded data
 app.use(express.urlencoded({ extended: true }))
 
+
 // user đăng ký
 app.use('/api', require('./routes/api'));
 

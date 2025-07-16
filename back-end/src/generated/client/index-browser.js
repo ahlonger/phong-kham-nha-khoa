@@ -129,6 +129,20 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.BookingScalarFieldEnum = {
+  id: 'id',
+  hoten: 'hoten',
+  email: 'email',
+  sdt: 'sdt',
+  diachi: 'diachi',
+  dichvu: 'dichvu',
+  bacsi: 'bacsi',
+  ghichu: 'ghichu',
+  thoigianhen: 'thoigianhen',
+  dongy: 'dongy',
+  created_at: 'created_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -147,9 +161,20 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   role: 'role'
 };
 
+exports.Prisma.BookingOrderByRelevanceFieldEnum = {
+  hoten: 'hoten',
+  email: 'email',
+  sdt: 'sdt',
+  diachi: 'diachi',
+  dichvu: 'dichvu',
+  bacsi: 'bacsi',
+  ghichu: 'ghichu'
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Booking: 'Booking'
 };
 
 /**

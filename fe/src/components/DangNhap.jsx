@@ -2,29 +2,62 @@ import React, { useState } from "react";
 import { FaEnvelope, FaLock, FaClinicMedical } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Thêm Link từ react-router-dom
 import bacsi from "../assets/bacsi.png"; // Ensure you have this image in the assets folder
-
+import bacsi1 from "../assets/bacsi1.png";
+import Api from "./Api";
+import { useNavigate } from "react-router-dom";
 const DangNhap = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
-    e.preventDefault();
-    let newErrors = {};
+  e.preventDefault();
 
-    if (!email.trim()) newErrors.email = "Email không được để trống.";
-    else if (!/\S+@\S+\.\S+/.test(email))
-      newErrors.email = "Email không hợp lệ.";
-    if (!password.trim()) newErrors.password = "Mật khẩu không được để trống.";
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      alert("Đăng nhập thành công!");
-      setEmail("");
-      setPassword("");
-    }
+  const login = {
+    email: email,
+    password: password
   };
+
+  let errorsSubmit = {};
+  let flag = true;
+
+  if (login.email === "") {
+    errorsSubmit.email = "Vui lòng nhập email";
+    flag = false;
+  }
+  if (login.password === "") {
+    errorsSubmit.password = "Vui lòng nhập mật khẩu";
+    flag = false;
+  }
+
+  if (!flag) {
+    setErrors(errorsSubmit);
+  } else {
+    Api.post("login", login)
+      .then((response) => {
+        console.log("RESPONSE USER: ", response.data.user);
+        if (response.data.message == "Đăng nhập thành công") {
+          const user = response.data.user;
+          localStorage.setItem("user", JSON.stringify(user));
+          alert("Đăng nhập thành công!")
+          if (user.role == "admin") {
+            navigate("/admin");
+          } else if (user.role == "bacsi") {
+            navigate("/bacsi");
+          } else {
+            navigate("/");
+          }
+        } else {
+          alert("Đăng nhập thất bại!");
+        }
+      })
+      .catch((error) => {
+        alert("Email hoặc mật khẩu không đúng!");
+        console.error(error);
+      });
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-blue-50">
@@ -37,7 +70,7 @@ const DangNhap = () => {
           hồ sơ khám bệnh & chăm sóc sức khỏe.
         </p>
         <img
-          src={bacsi}
+          src={bacsi1}
           alt="login-clinic"
           className="w-64 mt-6"
         />

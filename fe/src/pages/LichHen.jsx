@@ -1,33 +1,38 @@
 // src/pages/LichHen.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaCalendarAlt, FaFileExport, FaSearch } from "react-icons/fa";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-
+import Api from "../components/Api";
+import dayjs from "dayjs";
 const LichHen = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [lichHenData, setLichHenData] = useState([
-    {
-      id: 1,
-      benhNhan: "Nguyễn Văn A",
-      bacSi: "BS. Lê Văn T",
-      thoiGian: "26/06/2025 - 09:30",
-      dichVu: "Khám tổng quát",
-      trangThai: "Đang chờ",
-    },
-    {
-      id: 2,
-      benhNhan: "Trần Thị B",
-      bacSi: "BS. Nguyễn Thị H",
-      thoiGian: "26/06/2025 - 14:00",
-      dichVu: "Khám da liễu",
-      trangThai: "Đã xác nhận",
-    },
-  ]);
-
+  const [lichHenData, setLichHenData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //  Lấy dữ liệu lịch hẹn từ API khi load component
+  useEffect(() => {
+    Api.get("booking")
+      .then((res) => {
+        const data = res.data.map((item) => ({
+          id: item.id,
+          benhNhan: item.hoten || "Chưa rõ",
+          bacSi: item.bacsi || "BS. Chưa rõ",
+          thoiGian: item.thoigianhen
+          ? dayjs(item.thoigianhen).format("HH:mm DD/MM/YYYY")
+          : "Không rõ",
+
+          dichVu: item.dichvu || "Chưa rõ",
+          trangThai: item.trangthai || "Đang chờ",
+        }));
+        setLichHenData(data);
+      })
+      .catch((err) => {
+        console.error("Lỗi lấy danh sách lịch hẹn:", err);
+      });
+  }, []);
 
   const filteredData = lichHenData.filter(
     (item) =>
