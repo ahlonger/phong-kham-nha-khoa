@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import bacsiImg from "../assets/bacsi.png";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import BacSi from "../assets/phongkham.jpg";
 
 const DanhSachBacSi = () => {
   const [selectedSpec, setSelectedSpec] = useState("Tất cả");
 
   const doctors = [
     { name: "BS. Phạm Hữu Thân Thương", spec: "Phụ Khoa", desc: "15 năm kinh nghiệm" },
-    { name: "BS. Trần Thị B", spec: "Nha chu", desc: "10 năm kinh nghiệm" },
+    { name: "BS. Trần Thị B", spec: "Nha khoa", desc: "10 năm kinh nghiệm" },
     { name: "BS. Lê Văn C", spec: "Cấy ghép Implant", desc: "12 năm kinh nghiệm" },
-    { name: "BS. Nguyễn Tấn Dũng", spec: "Khám chim", desc: "11 năm kinh nghiệm" },
-    { name: "BS. Phạm Minh Quân", spec: "Phám Trĩ", desc: "9 năm kinh nghiệm" },
-    { name: "BS. Lê Thanh Hà", spec: "Chống cận", desc: "8 năm kinh nghiệm" },
-    { name: "BS. Võ Hồ Thành Trung", spec: "Chống Ngu", desc: "5 năm kinh nghiệm" },
+    { name: "BS. Nguyễn Tấn Dũng", spec: "Tổng quát", desc: "12 năm kinh nghiệm" },
+    { name: "BS. Phạm Minh Quân", spec: "Răng hàm mặt", desc: "9 năm kinh nghiệm" },
+    { name: "BS. Lê Thanh Hà", spec: "Khám mắt", desc: "8 năm kinh nghiệm" },
+    { name: "BS. Võ Hồ Thành Trung", spec: "Ngoại khoa", desc: "5 năm kinh nghiệm" },
     { name: "BS. Phạm Thị D", spec: "Nha khoa thẩm mỹ", desc: "14 năm kinh nghiệm" },
   ];
 
@@ -55,7 +55,7 @@ const DanhSachBacSi = () => {
               className="bg-white p-5 rounded-xl shadow hover:-translate-y-1 transition"
             >
               <img
-                src={bacsiImg}
+                src={BacSi}
                 className="w-24 h-24 object-cover rounded-full mx-auto mb-4"
                 alt={bs.name}
               />

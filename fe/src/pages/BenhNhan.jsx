@@ -9,7 +9,7 @@ import bacsiImg from "../assets/bacsi.png";
 import serviceImg1 from "../assets/banner.jpg";
 import serviceImg2 from "../assets/banner.jpg";
 import serviceImg3 from "../assets/banner.jpg";
-
+import BacSi from "../assets/bacsi1.png";
 const BenhNhan = () => {
   const [rating, setRating] = useState(0);
   const [isLoggedIn] = useState(false);
@@ -76,7 +76,7 @@ const BenhNhan = () => {
           <div className="flex flex-wrap justify-center md:justify-between gap-6">
             {[{ name: "BS. Nguyễn Văn A", spec: "Răng Hàm Mặt" }, { name: "BS. Trần Thị B", spec: "Nha chu" }, { name: "BS. Lê Văn C", spec: "Cấy ghép Implant" }, { name: "BS. Phạm Thị D", spec: "Nha khoa thẩm mỹ" }].map((bs, i) => (
               <div key={i} className="bg-white p-5 rounded-xl w-full sm:w-[45%] md:w-[23%] shadow hover:-translate-y-1 transition">
-                <img src={bacsiImg} className="w-24 h-24 object-cover rounded-full mx-auto mb-4" alt={bs.name} />
+                <img src={BacSi} className="w-24 h-24 object-cover rounded-full mx-auto mb-4" alt={bs.name} />
                 <h3 className="font-semibold text-gray-800">{bs.name}</h3>
                 <p className="text-sm text-gray-600 mb-2">{bs.spec}</p>
                 <button className="bg-[#0077cc] text-white px-4 py-2 rounded hover:bg-[#005fa3]">Xem chi tiết</button>
